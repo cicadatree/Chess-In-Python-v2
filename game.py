@@ -101,7 +101,37 @@ class GameState:
             case KnightPiece():
                 return self
             case BishopPiece():
-                return self
+                dx = abs(location.x - sourcePiece.location.x)
+                dy = abs(location.y - sourcePiece.location.y)
+
+                #make sure you're not trying to validate a move that would land on one of your own pieces
+                if gameBoard.board[location.x][location.y].colour == sourcePiece.colour:
+                    return False
+                # Check if the move is on the diagonal
+                if dx != dy:
+                    return False
+                # Check for pieces in the northeast direction
+                if location.x > sourcePiece.location.x and location.y > sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((sourcePiece.location.x + i),(sourcePiece.location.y + i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the northwest direction
+                elif location.x < sourcePiece.location.x and location.y > sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((sourcePiece.location.x - i),(sourcePiece.location.y + i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the southeast direction
+                elif location.x > sourcePiece.location.x and location.y < sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((sourcePiece.location.x + i),(sourcePiece.location.y - i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the southwest direction
+                elif location.x < sourcePiece.location.x and location.y < sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((sourcePiece.location.x - i),(sourcePiece.location.y - i)))) is not EmptySquare:
+                            return False
+                return True
+            
             case KingPiece():
                 return self
             case QueenPiece():
