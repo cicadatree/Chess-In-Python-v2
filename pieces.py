@@ -46,81 +46,12 @@ class PawnPiece(Piece):
     def __init__(self, colour, location : Position):
         super().__init__(colour, location)
 
-    def isValidMove(self, gameBoard, location : Position):
-
-        dx = abs(location.x - self.location.x)
-
-        #make sure you're not trying to validate a move that would land on one of your own pieces
-        if gameBoard.board[location.x][location.y].colour == self.colour:
-            return False
-        
-        if self.location.x == location.x: 
-            if self.colour == Colour.WHITE:
-                if location.y == self.location.y - 1:
-                    return True
-                elif self.location.y == 6 and location.y == self.location.y - 2:
-                    return True
-                else:
-                    return False
-            else:
-                if location.y == self.location.y + 1:
-                    return True
-                elif self.location.y == 1 and location.y == self.location.y + 2:
-                    return True
-                else:
-                    return False
-        elif dx == 1:
-            if self.colour == Colour.WHITE:
-                if location.y == self.location.y - 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))) is not EmptySquare:
-                    return True
-                else:
-                    return False
-            else:
-                if location.y == self.location.y + 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))): 
-                    return True
-                else:
-                    return False
-        else:
-            return False
-
 
 class RookPiece(Piece):
     def __init__(self, colour, location : Position):
         super().__init__(colour, location)
 
-    def isValidMove(self, location : Position, gameBoard):
-        dx = abs(location.x - self.location.x)
-        dy = abs(location.y - self.location.y)
 
-        #make sure you're not trying to validate a move that would land on one of your own pieces
-        if gameBoard.board[location.x][location.y].colour == self.colour:
-            return False
-
-        # Check if the move is on the cardinal
-        if dx != 0 and dy != 0:
-            return False
-
-        # Check for pieces in the east direction
-        if location.x > self.location.x:
-            for i in range(1, dx):
-                if type(gameBoard.getPieceFromBoard(Position((self.location.x + i),(self.location.y)))) is not EmptySquare:
-                    return False
-        # Check for pieces in the west direction
-        elif location.x < self.location.x:
-            for i in range(1, dx):
-                if type(gameBoard.getPieceFromBoard(Position((self.location.x - i), (self.location.y)))) is not EmptySquare:
-                    return False
-        # Check for pieces in the south direction
-        elif location.y > self.location.y:
-            for i in range(1, dy):
-                if type(gameBoard.getPieceFromBoard(Position((self.location.x), (self.location.y + i)))) is not EmptySquare:
-                    return False
-        # Check for pieces in the north direction
-        elif location.y < self.location.y:
-            for i in range(1, dy):
-                if type(gameBoard.getPieceFromBoard(Position((self.location.x), (self.location.y - i)))) is not EmptySquare:
-                    return False
-        return True
 
 
 class BishopPiece(Piece):

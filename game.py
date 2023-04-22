@@ -15,6 +15,8 @@ from pieces import *
 longNotationPattern = "^([a-h])([1-8])-([a-h])([1-8])$"
 
 
+
+
 class GameState:
     gameBoard: ChessBoard = GameBoardFactory.getStandardBoard()   # gameBoard is a ChessBoard-like object
 
@@ -24,9 +26,60 @@ class GameState:
     whitePiecesOnBoard = []
     blackPiecesOnBoard = []
 
+    def isValidMove(self, gameBoard : ChessBoard, sourcePiece : Piece, location : Position):
+        match sourcePiece:
+            case EmptySquare():
+                return False
+            case PawnPiece():
+                dx = abs(location.x - sourcePiece.location.x)
+
+                #make sure you're not trying to validate a move that would land on one of your own pieces
+                if gameBoard.board[location.x][location.y].colour == sourcePiece.colour:
+                    return False
+                
+                if sourcePiece.location.x == location.x: 
+                    if sourcePiece.colour == Colour.WHITE:
+                        if location.y == sourcePiece.location.y - 1:
+                            return True
+                        elif sourcePiece.location.y == 6 and location.y == sourcePiece.location.y - 2:
+                            return True
+                        else:
+                            return False
+                    else:
+                        if location.y == sourcePiece.location.y + 1:
+                            return True
+                        elif sourcePiece.location.y == 1 and location.y == sourcePiece.location.y + 2:
+                            return True
+                        else:
+                            return False
+                elif dx == 1:
+                    if sourcePiece.colour == Colour.WHITE:
+                        if location.y == sourcePiece.location.y - 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))) is not EmptySquare:
+                            return True
+                        else:
+                            return False
+                    else:
+                        if location.y == sourcePiece.location.y + 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))): 
+                            return True
+                        else:
+                            return False
+                else:
+                    return False
+            case RookPiece():
+                return self
+            case KnightPiece():
+                return self
+            case BishopPiece():
+                return self
+            case KingPiece():
+                return self
+            case QueenPiece():
+                return self
+
     # just move the piece; valibdation is done elsewhere
     def movePiece(self, sourcePiece : Piece, destinationPosition : Position):
-        if sourcePiece.isValidMove(self.gameBoard, destinationPosition):
+        moveTest = self.isValidMove(self.gameBoard, sourcePiece, destinationPosition)
+        if moveTest:
             # first, take the sourcePiece off the board (by replacing it with an EmptySquare)
             self.gameBoard.board[sourcePiece.location.x][sourcePiece.location.y] = EmptySquare()
             # next, assign the location of the source piece to the destination position (this is in the in-memory representation of the source piece)
@@ -49,6 +102,57 @@ class Game:
         self.state = GameState()
         self.whichTurn = Colour.WHITE
         self.turnCounter = 0 
+
+    def isValidMove(self, gameBoard : ChessBoard, location : Position, sourcePiece : Piece):
+            match sourcePiece:
+                case EmptySquare():
+                    return False
+                
+                case PawnPiece():
+                    dx = abs(location.x - sourcePiece.location.x)
+                    
+                    if sourcePiece.colour == self.whichTurn: #make sure you're not trying to validate a move that would land on one of your own pieces
+                        return False
+                    
+                    if sourcePiece.location.x == location.x: 
+                        if self.colour == Colour.WHITE:
+                            if location.y == sourcePiece.location.y - 1:
+                                return True
+                            elif sourcePiece.location.y == 6 and location.y == sourcePiece.location.y - 2:
+                                return True
+                            else:
+                                return False
+                        else:
+                            if location.y == sourcePiece.location.y + 1:
+                                return True
+                            elif sourcePiece.location.y == 1 and location.y == sourcePiece.location.y + 2:
+                                return True
+                            else:
+                                return False
+                    elif dx == 1:
+                        if self.colour == Colour.WHITE:
+                            if location.y == sourcePiece.location.y - 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))) is not EmptySquare:
+                                return True
+                            else:
+                                return False
+                        else:
+                            if location.y == sourcePiece.location.y + 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))): 
+                                return True
+                            else:
+                                return False
+                    else:
+                        return False
+                    return self
+                case RookPiece():
+                    return self
+                case KnightPiece():
+                    return self
+                case BishopPiece():
+                    return self
+                case KingPiece():
+                    return self
+                case QueenPiece():
+                    return self
 
     def moveToNextTurn(self):
         self.turnCounter += 1
