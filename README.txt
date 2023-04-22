@@ -10,4 +10,6 @@ v2 seeks to improve upon v1 in the following ways:
 - restructuring the application code to be more eloquent and modular (trying to improve on DRY). 
   The current code base feels too hard-coded, and not modular enough (or just isn't intelligently written).
 
-Note: all files root to application.py
+Note: 
+- All files root to application.py
+- Don't forget to activate the virtual environment (cmcd > ...\path\to\venv\Script\activate)
