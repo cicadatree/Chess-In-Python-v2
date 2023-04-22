@@ -61,27 +61,6 @@ class KnightPiece(Piece):
     def __init__(self, colour, location : Position):
         super().__init__(colour, location)
 
-    def isValidMove(self, location : Position, gameBoard):
-        x = self.location.x
-        y = self.location.y
-
-        #make sure you're not trying to validate a move that would land on one of your own pieces
-        if gameBoard.board[location.x][location.y].colour == whichTurn:
-            return False
-
-        # list of all possible moves
-        destinationSquares = [(x+1,y+2),(x-1,y+2),(x+1,y-2),(x-1,y-2),(x+2,y+1),(x-2,y+1),(x+2,y-1),(x-2,y-1)]
-
-        # check if target valid for the knight
-        if (location.x, location.y) not in destinationSquares:
-            return False
-        # check if target location is out of bounds
-        if (location.x < 0 and location.x > 7) and (location.y < 0 and location.y > 7):
-            return False
-        if gameBoard.getPieceFromBoard(location).getColour() == self.colour:
-            return False
-        return True
-
 
 class KingPiece(Piece):
     def __init__(self, colour, location : Position):
