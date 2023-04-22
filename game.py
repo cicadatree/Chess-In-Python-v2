@@ -15,8 +15,6 @@ from pieces import *
 longNotationPattern = "^([a-h])([1-8])-([a-h])([1-8])$"
 
 
-
-
 class GameState:
     gameBoard: ChessBoard = GameBoardFactory.getStandardBoard()   # gameBoard is a ChessBoard-like object
 
@@ -101,13 +99,11 @@ class GameState:
             case KnightPiece():
                 x = sourcePiece.location.x
                 y = sourcePiece.location.y
+                destinationSquares = [(x+1,y+2),(x-1,y+2),(x+1,y-2),(x-1,y-2),(x+2,y+1),(x-2,y+1),(x+2,y-1),(x-2,y-1)] # list of all possible moves
 
                 #make sure you're not trying to validate a move that would land on one of your own pieces
                 if gameBoard.board[location.x][location.y].colour == sourcePiece.colour:
                     return False
-
-                # list of all possible moves
-                destinationSquares = [(x+1,y+2),(x-1,y+2),(x+1,y-2),(x-1,y-2),(x+2,y+1),(x-2,y+1),(x+2,y-1),(x-2,y-1)]
 
                 # check if target valid for the knight
                 if (location.x, location.y) not in destinationSquares:
@@ -156,7 +152,6 @@ class GameState:
                 #make sure you're not trying to validate a move that would land on one of your own pieces
                 if gameBoard.board[location.x][location.y].colour == sourcePiece.colour:
                     return False
-
                 if dx > 1 or dy > 1:
                     return False
                 # Check for pieces in the southeast direction
@@ -207,11 +202,9 @@ class GameState:
                 #make sure you're not trying to validate a move that would land on one of your own pieces
                 if gameBoard.board[location.x][location.y].colour == sourcePiece.colour:
                     return False
-
                 # make sure that the destination location is on a cardinal (diagonal) line of sight
                 if dx != dy and (dx != 0 and dy != 0):
                     return False
-
                 # Check for pieces in the southeast direction
                 if location.x > sourcePiece.location.x and location.y > sourcePiece.location.y:
                     for i in range(1, dx):
@@ -280,57 +273,6 @@ class Game:
         self.state = GameState()
         self.whichTurn = Colour.WHITE
         self.turnCounter = 0 
-
-    def isValidMove(self, gameBoard : ChessBoard, location : Position, sourcePiece : Piece):
-            match sourcePiece:
-                case EmptySquare():
-                    return False
-                
-                case PawnPiece():
-                    dx = abs(location.x - sourcePiece.location.x)
-                    
-                    if sourcePiece.colour == self.whichTurn: #make sure you're not trying to validate a move that would land on one of your own pieces
-                        return False
-                    
-                    if sourcePiece.location.x == location.x: 
-                        if self.colour == Colour.WHITE:
-                            if location.y == sourcePiece.location.y - 1:
-                                return True
-                            elif sourcePiece.location.y == 6 and location.y == sourcePiece.location.y - 2:
-                                return True
-                            else:
-                                return False
-                        else:
-                            if location.y == sourcePiece.location.y + 1:
-                                return True
-                            elif sourcePiece.location.y == 1 and location.y == sourcePiece.location.y + 2:
-                                return True
-                            else:
-                                return False
-                    elif dx == 1:
-                        if self.colour == Colour.WHITE:
-                            if location.y == sourcePiece.location.y - 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))) is not EmptySquare:
-                                return True
-                            else:
-                                return False
-                        else:
-                            if location.y == sourcePiece.location.y + 1 and type(gameBoard.getPieceFromBoard(Position((location.x),(location.y)))): 
-                                return True
-                            else:
-                                return False
-                    else:
-                        return False
-                    return self
-                case RookPiece():
-                    return self
-                case KnightPiece():
-                    return self
-                case BishopPiece():
-                    return self
-                case KingPiece():
-                    return self
-                case QueenPiece():
-                    return self
 
     def moveToNextTurn(self):
         self.turnCounter += 1
