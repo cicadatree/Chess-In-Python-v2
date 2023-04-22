@@ -201,7 +201,58 @@ class GameState:
                             return False
                 return True
             case QueenPiece():
-                return self
+                dx = abs(location.x - sourcePiece.location.x)
+                dy = abs(location.y - sourcePiece.location.y)
+
+                #make sure you're not trying to validate a move that would land on one of your own pieces
+                if gameBoard.board[location.x][location.y].colour == sourcePiece.colour:
+                    return False
+
+                # make sure that the destination location is on a cardinal (diagonal) line of sight
+                if dx != dy and (dx != 0 and dy != 0):
+                    return False
+
+                # Check for pieces in the southeast direction
+                if location.x > sourcePiece.location.x and location.y > sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((location.x + i),(location.y + i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the southwest direction
+                elif location.x < sourcePiece.location.x and location.y > sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((location.x - i),(location.y + i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the northeast direction
+                elif location.x > sourcePiece.location.x and location.y < sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((location.x + i),(location.y - i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the northwest direction
+                elif location.x < sourcePiece.location.x and location.y < sourcePiece.location.y:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((location.x - i),(location.y - i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the east direction
+                elif location.x > sourcePiece.location.x:
+                    for i in range(1, dx):
+                        if (type(gameBoard.getPieceFromBoard(Position((location.x + i),(location.y)))) is not EmptySquare):
+                            return False
+                # Check for pieces in the west direction
+                elif location.x < sourcePiece.location.x:
+                    for i in range(1, dx):
+                        if type(gameBoard.getPieceFromBoard(Position((location.x - i), (location.y)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the south direction
+                elif location.y > sourcePiece.location.y:
+                    for i in range(1, dy):
+                        if type(gameBoard.getPieceFromBoard(Position((location.x), (location.y + i)))) is not EmptySquare:
+                            return False
+                # Check for pieces in the north direction
+                elif location.y < sourcePiece.location.y:
+                    for i in range(1, dy):
+                        if type(gameBoard.getPieceFromBoard(Position((location.x), (location.y - i)))) is not EmptySquare:
+                            return False
+                return True
 
     # just move the piece; valibdation is done elsewhere
     def movePiece(self, sourcePiece : Piece, destinationPosition : Position):
