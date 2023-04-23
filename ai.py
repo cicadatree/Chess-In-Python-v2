@@ -6,7 +6,8 @@ from game import *
 # the computer player's decision-making code.
 
 # The computer player will always be whichever 
-# colour the human does not choose to play as.
+# colour the human does not choose to play as, 
+# though this has yet to be implemented (see the "menu case" in the ChessApp class in application.py)
 
 # 1. AI makes move decisions for the opposite colour of the human player
 #
@@ -36,22 +37,22 @@ def aiMove(mainGame : Game, mainGameState : GameState) -> bool:
                         print("It is a Pawn")
                         gameStateCopy = copy.deepcopy(mainGameState) # use the deep copy of the current gameState to conduct legal move validations without actually modifying the mainGameState
                         # TODO: conduct legal move validation in the deepcopy(mainGameState) and do move scoring
-                        
+
                     case KingPiece():
                         print("It is a King")
-                        
+
                     case QueenPiece():
                         print("It is a Queen")
-                        
+
                     case RookPiece():
                         print("It is a Rook")
-                        
+
                     case KnightPiece():
                         print("It is a Knight")
 
                     case BishopPiece():
                         print("It is a Bishop")
-                        
+
                     case _:
                         print("error - this should never happen")
                         return False
