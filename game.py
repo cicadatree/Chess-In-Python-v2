@@ -26,8 +26,10 @@ class GameState:
 
     def isValidMove(self, gameBoard : ChessBoard, sourcePiece : Piece, location : Position):
         match sourcePiece:
+
             case EmptySquare():
                 return False
+            
             case PawnPiece():
                 dx = abs(location.x - sourcePiece.location.x)
 
@@ -61,8 +63,8 @@ class GameState:
                             return True
                         else:
                             return False
-                else:
-                    return False
+                return False
+                
             case RookPiece():
                 dx = abs(location.x - sourcePiece.location.x)
                 dy = abs(location.y - sourcePiece.location.y)
@@ -96,6 +98,7 @@ class GameState:
                         if type(gameBoard.getPieceFromBoard(Position((sourcePiece.location.x), (sourcePiece.location.y - i)))) is not EmptySquare:
                             return False
                 return True
+            
             case KnightPiece():
                 x = sourcePiece.location.x
                 y = sourcePiece.location.y
@@ -114,6 +117,7 @@ class GameState:
                 if gameBoard.getPieceFromBoard(location).getColour() == sourcePiece.colour:
                     return False
                 return True
+            
             case BishopPiece():
                 dx = abs(location.x - sourcePiece.location.x)
                 dy = abs(location.y - sourcePiece.location.y)
@@ -145,6 +149,7 @@ class GameState:
                         if type(gameBoard.getPieceFromBoard(Position((sourcePiece.location.x - i),(sourcePiece.location.y - i)))) is not EmptySquare:
                             return False
                 return True
+            
             case KingPiece():
                 dx = abs(location.x - sourcePiece.location.x)
                 dy = abs(location.y - sourcePiece.location.y)
@@ -195,6 +200,7 @@ class GameState:
                         if type(gameBoard.getPieceFromBoard(Position((location.x), (location.y - i)))) is not EmptySquare:
                             return False
                 return True
+
             case QueenPiece():
                 dx = abs(location.x - sourcePiece.location.x)
                 dy = abs(location.y - sourcePiece.location.y)
@@ -247,6 +253,10 @@ class GameState:
                             return False
                 return True
 
+            case _:
+                print("This should never happen")
+                return False
+
     # just move the piece; valibdation is done elsewhere
     def movePiece(self, sourcePiece : Piece, destinationPosition : Position):
         moveTest = self.isValidMove(self.gameBoard, sourcePiece, destinationPosition)
@@ -268,20 +278,12 @@ class GameState:
 
 
 class Game:
-
     def __init__(self):
         self.state = GameState()
         self.whichTurn = Colour.WHITE
         self.turnCounter = 0 
 
-    def moveToNextTurn(self):
-        self.turnCounter += 1
-        if self.turnCounter % 2 == 0:
-            self.whichTurn = Colour.WHITE
-        else:
-            self.whichTurn = Colour.BLACK
-
-    def askForMove(self, message : str) -> typing.Tuple[Position, Position]: # global utility function for checking if a piece move is valid
+    def askForMove(self, message : str) -> typing.Tuple[Position, Position]: # utility function for checking if a piece move is valid
         # ask the user to input the X position for the piece they want to move
         print(message)
         print(f"{str(self.whichTurn)}'s score is: {self.evaluateBoard()}\n")
@@ -322,6 +324,13 @@ class Game:
         # movePiece(sourcePiece : Piece, destinationPosition : typing.Tuple(Position, Position))
         if not self.state.movePiece(self.state.gameBoard.getPieceFromBoard(move[0]), move[1]):
             self.doTurn()
+
+    def moveToNextTurn(self):
+        self.turnCounter += 1
+        if self.turnCounter % 2 == 0:
+            self.whichTurn = Colour.WHITE
+        else:
+            self.whichTurn = Colour.BLACK
 
     def evaluateBoard(self): # basic evaluation function which iterates over the board and calculates the given player's score
         whiteScore = 0
@@ -374,8 +383,7 @@ class Game:
                     else:
                         return blackScore
 
-    # global utility function that can be called whenever you need to check if a King is in check. 
-    def isKingCheck(self, colour : Colour): 
+    def isKingCheck(self, colour : Colour):  # utility function that can be called whenever you need to check if a King is in check. 
         # Get the colour's king Position
         for i in range(8):
             for j in range(8):
