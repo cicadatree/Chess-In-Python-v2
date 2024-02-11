@@ -1,6 +1,6 @@
 v2 seeks to improve upon v1 in the following ways:
 
-- implementing the use of a virtual environment to run the application within (largely just for 
+- implementing the use of a virtual environment to run the application within largely just for 
   upholding general best practices; I'm not actually concerned about issues with dependencies in 
   different projects (yet). 
 
@@ -12,4 +12,4 @@ v2 seeks to improve upon v1 in the following ways:
 
 Note: 
 - All files root to application.py
-- Don't forget to activate the virtual environment (cmcd > ...\path\to\venv\Script\activate)
+- Don't forget to activate the virtual environment (cmcd > ...\path\to\venv\Script\activate) 

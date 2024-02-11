@@ -1,4 +1,5 @@
 import pygame as pg
+from application import main
 
 class GameWindow:
     def __init__(self):
@@ -13,8 +14,6 @@ class GameWindow:
         self.ranks = ['1', '2', '3', '4', '5', '6', '7', '8']
         self.blockSize = 75 # size of grid blocks
         self.gridSize = 8 # # of grid blocks
-
-        ### TO BE ADDED:: init in-memory chessboard representation here (e.g. the array of arrays) ###
 
     def drawBoard(self):
 
@@ -44,10 +43,10 @@ class GameWindow:
         ### iter over chessboard representation and draw each piece on the board###
         for row in range(self.gridSize):
             for col in range(self.gridSize):
-                '''piece = self.chessboard[row][col] # get the piece info
+                piece = self.gameBoard.board[row][col] # get the piece info
                 if piece: # If there is a piece on this square
                     # draw the piece
-                    pass'''
+                    pass
                 pg.draw.circle(self.screen, pg.Color('black' if piece == 'B' else 'white'),
                                (self.startX + col * self.blockSize + self.blockSize // 2,
                                 self.startY + row * self.blockSize + self.blockSize // 2), 
@@ -68,5 +67,6 @@ class GameWindow:
 
         pg.quit()
 
-newGameWindow = GameWindow()
-newGameWindow.runGame()
+game = GameWindow()
+game.runGame()
+game.drawPieces()

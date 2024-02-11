@@ -277,8 +277,7 @@ class GameState:
             return False
 
 
-class Game:
-    def __init__(self):
+class     def __init__(self):
         self.state = GameState()
         self.whichTurn = Colour.WHITE
         self.turnCounter = 0 

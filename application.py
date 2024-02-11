@@ -1,4 +1,6 @@
 from game import Game
+from ai import aiMove
+from gui import GameWindow
 
 
 class ChessApp:
@@ -16,7 +18,7 @@ class ChessApp:
                     self.mainGame.gameLoop()
                 case False: # this is the "menu" case (the game is not running, so go to the menu)
                     self.userInput = input("Welcome to Chess in Python. To start a new game, type: NEW. ")
-                    
+
                     match self.userInput:
                         case "NEW":
                             self.colourChoice = input("Which colour do you want to play as? (Enter \"w\" or \"b\") ")

@@ -1,6 +1,8 @@
-import copy
+from __future__ import annotations
 from core import *
 from game import *
+import re
+import copy
 
 # This file will be used to contain the code for 
 # the computer player's decision-making code.
@@ -22,40 +24,19 @@ from game import *
 ###     i. take the first index from each piece's move score lists (which should be each pieces best move), add them to a new list 
 ###     ii. sort the new list in descending order and return the higesht-scoring move among all legal moves
 
-def aiMove(mainGame : Game, mainGameState : GameState) -> bool:
-    #i. iterate over the board
-    for i in range(8):
-        for j in range(8):
-            # if the colour of the piece being iterated is not the ai's (i.e. is the human's colour - opposite of the ai's, or UNDEF - the EmptySquare's colour), then continue
-            if mainGame.state.gameBoard.board[i][j].colour != mainGame.whichTurn:
-                continue
-            # else the piece belongs to the ai
-            else:
-                # match case is the same as switch case (just in python). Check each piece type on each iteration. W
-                match mainGame.state.gameBoard.board[i][j]:
-                    case PawnPiece():
-                        print("It is a Pawn")
-                        gameStateCopy = copy.deepcopy(mainGameState) # use the deep copy of the current gameState to conduct legal move validations without actually modifying the mainGameState
-                        # TODO: conduct legal move validation in the deepcopy(mainGameState) and do move scoring
+class aiMove:
+    def __init__( self, colour, max_depth ):
+        self.colour = colour
+        self.max_dept = max_depth
 
-                    case KingPiece():
-                        print("It is a King")
+    def evaluate_board( self, board ):
+        # TODO: implement a simple evaluation function to score the given board state
+        return 0
+    
+    def minimax( self, board : GameState, depth, is_maximizing ):
+        # Perform the minimax algorithm
 
-                    case QueenPiece():
-                        print("It is a Queen")
-
-                    case RookPiece():
-                        print("It is a Rook")
-
-                    case KnightPiece():
-                        print("It is a Knight")
-
-                    case BishopPiece():
-                        print("It is a Bishop")
-
-                    case _:
-                        print("error - this should never happen")
-                        return False
-        else:
-            # TODO: after for loop has completed iterations, build a list of the 0th element from each pieces sorted list of legal move scores
-            return True
+        if depth == 0:
+            return self.evaluate_board( board )
+        
+        legal_moves = board.isValidMove(self.colour)
